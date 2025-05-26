@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DF Audio Forensics - {% block title %}Home{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='img/favicon.ico') }}"
+    />
+    <script src="https://unpkg.com/feather-icons"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <nav>
+          <div class="logo">
+            <a href="{{ url_for('views.index') }}">
+              <span class="logo-text">DF Audio Forensics</span>
+            </a>
+          </div>
+          <ul class="nav-links">
+            <li>
+              <a
+                href="{{ url_for('views.index') }}"
+                class="{% if request.endpoint == 'views.index' %}active{% endif %}"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="{{ url_for('views.about') }}"
+                class="{% if request.endpoint == 'views.about' %}active{% endif %}"
+                >About</a
+              >
+            </li>
+            <li>
+              <a
+                href="{{ url_for('views.contact') }}"
+                class="{% if request.endpoint == 'views.contact' %}active{% endif %}"
+                >Contact</a
+              >
+            </li>
+          </ul>
+          <div class="hamburger">
+            <i data-feather="menu"></i>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+          <div class="message">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %} {% endwith %} {% block content %}{% endblock %}
+      </main>
+
+      <footer>
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>DF Audio Forensics</h3>
+            <p>
+              Advanced audio forgery detection using background noise analysis
+            </p>
+          </div>
+          <div class="footer-section">
+            <h3>Links</h3>
+            <ul>
+              <li><a href="{{ url_for('views.index') }}">Home</a></li>
+              <li><a href="{{ url_for('views.about') }}">About</a></li>
+              <li><a href="{{ url_for('views.contact') }}">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Contact</h3>
+            <p>Email: info@dfaudioforensics.com</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 DF Audio Forensics. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      feather.replace();
+
+      document
+        .querySelector(".hamburger")
+        .addEventListener("click", function () {
+          document.querySelector(".nav-links").classList.toggle("nav-active");
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

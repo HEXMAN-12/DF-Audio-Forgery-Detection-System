@@ -1,0 +1,178 @@
+{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content
+%}
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="animate-pop-in">Audio Forgery Detection</h1>
+    <p class="animate-pop-in">
+      Advanced analysis of background noise patterns to detect manipulated audio
+      files
+    </p>
+    <a href="#upload-section" class="btn primary-btn animate-pop-in"
+      >Get Started</a
+    >
+  </div>
+</section>
+
+<section id="upload-section" class="upload-section">
+  <div class="container">
+    <h2>Upload Your Audio File</h2>
+    <p class="section-description">
+      Upload a WAV file to analyze for potential forgery
+    </p>
+
+    <div class="upload-container">
+      <form method="post" enctype="multipart/form-data" class="upload-form">
+        {{ form.csrf_token }}
+
+        <div class="file-upload">
+          <label for="file-input" class="file-upload-label">
+            <i data-feather="upload-cloud"></i>
+            <span>Choose a WAV file or drag it here</span>
+          </label>
+          {{ form.file(id="file-input", class="file-input") }}
+          <p class="file-name">No file selected</p>
+        </div>
+
+        <div class="form-submit">
+          {{ form.submit(class="btn primary-btn") }}
+        </div>
+      </form>
+    </div>
+
+    <div class="info-cards">
+      <div class="card animate-slide-in">
+        <div class="card-icon">
+          <i data-feather="shield"></i>
+        </div>
+        <h3>Secure Analysis</h3>
+        <p>
+          Your files are processed securely and never shared with third parties
+        </p>
+      </div>
+
+      <div class="card animate-slide-in">
+        <div class="card-icon">
+          <i data-feather="zap"></i>
+        </div>
+        <h3>Fast Results</h3>
+        <p>Get detailed forensic analysis results in seconds</p>
+      </div>
+
+      <div class="card animate-slide-in">
+        <div class="card-icon">
+          <i data-feather="bar-chart-2"></i>
+        </div>
+        <h3>Comprehensive</h3>
+        <p>Multiple detection techniques for reliable results</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features-section">
+  <div class="container">
+    <h2>How It Works</h2>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">
+          <i data-feather="upload"></i>
+        </div>
+        <h3>Upload</h3>
+        <p>Upload your WAV audio file for analysis</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">
+          <i data-feather="cpu"></i>
+        </div>
+        <h3>Process</h3>
+        <p>Our algorithms analyze background noise patterns</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">
+          <i data-feather="check-circle"></i>
+        </div>
+        <h3>Results</h3>
+        <p>Get detailed forensic analysis with visual representations</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %} {% block scripts %}
+<script>
+  // Handle file upload UI
+  const fileInput = document.getElementById("file-input");
+  const fileName = document.querySelector(".file-name");
+  const fileLabel = document.querySelector(".file-upload-label span");
+  const originalLabelText = fileLabel.textContent;
+
+  fileInput.addEventListener("change", function () {
+    if (this.files && this.files.length > 0) {
+      fileName.textContent = this.files[0].name;
+      fileLabel.textContent = "File selected";
+    } else {
+      fileName.textContent = "No file selected";
+      fileLabel.textContent = originalLabelText;
+    }
+  });
+
+  // Drag and drop functionality
+  const dropArea = document.querySelector(".file-upload");
+
+  ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+    dropArea.addEventListener(eventName, preventDefaults, false);
+  });
+
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  ["dragenter", "dragover"].forEach((eventName) => {
+    dropArea.addEventListener(eventName, highlight, false);
+  });
+
+  ["dragleave", "drop"].forEach((eventName) => {
+    dropArea.addEventListener(eventName, unhighlight, false);
+  });
+
+  function highlight() {
+    dropArea.classList.add("highlight");
+  }
+
+  function unhighlight() {
+    dropArea.classList.remove("highlight");
+  }
+
+  dropArea.addEventListener("drop", handleDrop, false);
+
+  function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+
+    if (files && files.length > 0) {
+      fileInput.files = files;
+      fileName.textContent = files[0].name;
+      fileLabel.textContent = "File selected";
+    }
+  }
+
+  // Animation on scroll
+  const animateOnScroll = () => {
+    const elements = document.querySelectorAll(".animate-slide-in");
+
+    elements.forEach((element) => {
+      const elementPosition = element.getBoundingClientRect().top;
+      const screenPosition = window.innerHeight / 1.2;
+
+      if (elementPosition < screenPosition) {
+        element.classList.add("active");
+      }
+    });
+  };
+
+  window.addEventListener("scroll", animateOnScroll);
+  window.addEventListener("load", animateOnScroll);
+</script>
+{% endblock %}

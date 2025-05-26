@@ -1,0 +1,113 @@
+{% extends 'base.html' %} {% block title %}About{% endblock %} {% block content
+%}
+<section class="about-section">
+  <div class="container">
+    <h1>About DF Audio Forensics</h1>
+
+    <div class="about-content">
+      <div class="about-text">
+        <h2>Digital Forensics Project</h2>
+        <p>
+          DF Audio Forensics is an advanced tool designed to detect audio
+          forgery using sophisticated background noise analysis techniques.
+          Created as part of a Digital Forensics academic project, this
+          application implements several state-of-the-art methods for detecting
+          manipulated audio recordings.
+        </p>
+
+        <h3>Our Technology</h3>
+        <p>
+          Our audio forgery detection system employs multiple analysis
+          techniques:
+        </p>
+
+        <ul>
+          <li>
+            <strong>Background Noise Analysis:</strong> Examines the consistency
+            of background noise throughout a recording
+          </li>
+          <li>
+            <strong>ENF (Electrical Network Frequency) Analysis:</strong>
+            Detects inconsistencies in power line hum (50/60 Hz)
+          </li>
+          <li>
+            <strong>Spectral Discontinuity Detection:</strong> Identifies abrupt
+            changes in the audio spectrum that may indicate splicing
+          </li>
+          <li>
+            <strong>Noise Level Consistency Analysis:</strong> Evaluates
+            variations in background noise levels that could reveal editing
+          </li>
+        </ul>
+
+        <h3>Applications</h3>
+        <p>Audio forgery detection has important applications in:</p>
+
+        <ul>
+          <li>Legal evidence verification</li>
+          <li>Media authentication</li>
+          <li>Combating disinformation</li>
+          <li>Security and fraud prevention</li>
+        </ul>
+      </div>
+
+      <div class="about-image">
+        <img
+          src="{{ url_for('static', filename='img/audio-forensics.png') }}"
+          alt="Audio Forensics Illustration"
+        />
+      </div>
+    </div>
+
+    <div class="methodology">
+      <h2>Methodology</h2>
+
+      <div class="method-cards">
+        <div class="method-card">
+          <div class="method-icon">
+            <i data-feather="activity"></i>
+          </div>
+          <h3>Waveform Analysis</h3>
+          <p>
+            Analyzes the amplitude patterns of the audio signal over time to
+            detect inconsistencies that may indicate tampering.
+          </p>
+        </div>
+
+        <div class="method-card">
+          <div class="method-icon">
+            <i data-feather="grid"></i>
+          </div>
+          <h3>Spectrogram Analysis</h3>
+          <p>
+            Examines the frequency content of the audio over time to identify
+            unnatural patterns or discontinuities.
+          </p>
+        </div>
+
+        <div class="method-card">
+          <div class="method-icon">
+            <i data-feather="filter"></i>
+          </div>
+          <h3>Background Noise Extraction</h3>
+          <p>
+            Isolates the background noise component of the audio for detailed
+            forensic examination.
+          </p>
+        </div>
+
+        <div class="method-card">
+          <div class="method-icon">
+            <i data-feather="zap"></i>
+          </div>
+          <h3>ENF Analysis</h3>
+          <p>
+            Detects inconsistencies in the electrical network frequency
+            components that should be consistent in authentic recordings.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

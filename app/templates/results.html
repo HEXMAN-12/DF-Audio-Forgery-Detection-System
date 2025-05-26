@@ -1,0 +1,188 @@
+{% extends 'base.html' %} {% block title %}Analysis Results{% endblock %} {%
+block content %}
+<section class="results-section">
+  <div class="container">
+    <div class="results-header">
+      <h1>Analysis Results</h1>
+      <p>File: {{ filename }}</p>
+    </div>
+
+    <div class="result-summary">
+      <div
+        class="result-card {% if result.forgery_detected %}fraud{% else %}authentic{% endif %}"
+      >
+        <div class="result-icon">
+          {% if result.forgery_detected %}
+          <i data-feather="alert-triangle"></i>
+          {% else %}
+          <i data-feather="check-circle"></i>
+          {% endif %}
+        </div>
+        <h2>
+          {% if result.forgery_detected %} Potential Forgery Detected {% else %}
+          No Forgery Detected {% endif %}
+        </h2>
+        {% if result.forgery_detected %}
+        <p>
+          Confidence: <span class="confidence">{{ result.confidence }}%</span>
+        </p>
+        {% else %}
+        <p>The audio file appears to be authentic</p>
+        {% endif %}
+      </div>
+
+      <div class="audio-details">
+        <h3>Audio Details</h3>
+        <ul>
+          <li>
+            <strong>Duration:</strong> {{ "%.2f"|format(result.duration) }}
+            seconds
+          </li>
+          <li><strong>Sample Rate:</strong> {{ result.sample_rate }} Hz</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="analysis-details">
+      <h3>Analysis Details</h3>
+      <div class="details-accordion">
+        {% for detail in result.details %}
+        <div class="accordion-item">
+          <button class="accordion-button">{{ detail.split(':')[0] }}</button>
+          <div class="accordion-content">
+            <p>{{ detail }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="visualizations">
+      <h3>Audio Visualizations</h3>
+
+      <div class="tabs">
+        <div class="tab-buttons">
+          <button class="tab-button active" data-tab="waveform">
+            Waveform
+          </button>
+          <button class="tab-button" data-tab="spectrogram">Spectrogram</button>
+          <button class="tab-button" data-tab="noise">Background Noise</button>
+          <button class="tab-button" data-tab="discontinuity">
+            Spectral Discontinuity
+          </button>
+          <button class="tab-button" data-tab="noise-consistency">
+            Noise Consistency
+          </button>
+        </div>
+
+        <div class="tab-content">
+          <div class="tab-pane active" id="waveform">
+            <img
+              src="data:image/png;base64,{{ plots.waveform }}"
+              alt="Audio Waveform"
+              class="full-width-img"
+            />
+            <p class="tab-description">
+              The waveform shows the amplitude of the audio signal over time.
+            </p>
+          </div>
+
+          <div class="tab-pane" id="spectrogram">
+            <img
+              src="data:image/png;base64,{{ plots.spectrogram }}"
+              alt="Spectrogram"
+              class="full-width-img"
+            />
+            <p class="tab-description">
+              The spectrogram shows the frequency content of the audio signal
+              over time.
+            </p>
+          </div>
+
+          <div class="tab-pane" id="noise">
+            <img
+              src="data:image/png;base64,{{ plots.noise_waveform }}"
+              alt="Background Noise"
+              class="full-width-img"
+            />
+            <p class="tab-description">
+              This shows the isolated background noise component of the audio.
+            </p>
+          </div>
+
+          <div class="tab-pane" id="discontinuity">
+            <img
+              src="data:image/png;base64,{{ plots.discontinuity }}"
+              alt="Spectral Discontinuity"
+              class="full-width-img"
+            />
+            <p class="tab-description">
+              This analysis highlights potential splicing points where the audio
+              may have been cut and joined.
+            </p>
+          </div>
+
+          <div class="tab-pane" id="noise-consistency">
+            <img
+              src="data:image/png;base64,{{ plots.noise_consistency }}"
+              alt="Noise Consistency"
+              class="full-width-img"
+            />
+            <p class="tab-description">
+              This shows the consistency of background noise levels throughout
+              the recording.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a href="{{ url_for('views.index') }}" class="btn secondary-btn"
+        >Analyze Another File</a
+      >
+      <button id="print-report" class="btn primary-btn">Print Report</button>
+    </div>
+  </div>
+</section>
+{% endblock %} {% block scripts %}
+<script>
+  // Accordion functionality
+  const accordionButtons = document.querySelectorAll(".accordion-button");
+
+  accordionButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      button.classList.toggle("active");
+      const content = button.nextElementSibling;
+
+      if (button.classList.contains("active")) {
+        content.style.maxHeight = content.scrollHeight + "px";
+      } else {
+        content.style.maxHeight = 0;
+      }
+    });
+  });
+
+  // Tab functionality
+  const tabButtons = document.querySelectorAll(".tab-button");
+  const tabPanes = document.querySelectorAll(".tab-pane");
+
+  tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      // Remove active class from all buttons and panes
+      tabButtons.forEach((btn) => btn.classList.remove("active"));
+      tabPanes.forEach((pane) => pane.classList.remove("active"));
+
+      // Add active class to clicked button and corresponding pane
+      button.classList.add("active");
+      const tabId = button.getAttribute("data-tab");
+      document.getElementById(tabId).classList.add("active");
+    });
+  });
+
+  // Print functionality
+  document.getElementById("print-report").addEventListener("click", () => {
+    window.print();
+  });
+</script>
+{% endblock %}
