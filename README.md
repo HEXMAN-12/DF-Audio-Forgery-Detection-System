@@ -176,9 +176,3 @@ This method examines the consistency of background noise levels throughout a rec
 ## License
 
 This project is part of a Digital Forensics academic project.
-
-## Acknowledgements
-
-- Flask team for the web framework
-- Librosa team for audio analysis capabilities
-- Contributors to NumPy, SciPy, and Matplotlib
